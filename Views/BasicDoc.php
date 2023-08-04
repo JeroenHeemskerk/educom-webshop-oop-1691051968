@@ -1,6 +1,6 @@
 <?php
 
-require_once "html_doc.php";
+require_once "HtmlDoc.php";
 
 class BasicDoc extends HtmlDoc {
     protected $data;

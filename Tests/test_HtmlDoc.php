@@ -1,6 +1,6 @@
 <?php 
 
-require_once '../Views/html_doc.php';
+require_once '../Views/HtmlDoc.php';
 
 $view = new HtmlDoc();
 $view->show();
