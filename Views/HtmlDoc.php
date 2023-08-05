@@ -1,6 +1,6 @@
 <?php 
 
-class HtmlDoc {
+abstract class HtmlDoc {
     
     private function showHtmlStart() {
         echo '<!DOCTYPE html>';
@@ -9,18 +9,16 @@ class HtmlDoc {
     private function showHeadStart() {
         echo '<head>';
     }
-    protected function showHeadcontent() {
-        echo 'head content<br>';
-    }
+    abstract protected function showHeadcontent();
+    
     private function showHeadEnd() {
         echo '</head>';
     }
     private function showBodyStart() {
         echo '<body>';
     }
-    protected function showBodyContent() {
-        echo 'body content<br>';
-    }
+    abstract protected function showBodyContent();
+    
     private function showBodyEnd() {
         echo '</body>';
     }

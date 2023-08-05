@@ -2,5 +2,5 @@
 
 require_once '../Views/HtmlDoc.php';
 
-$view = new HtmlDoc();
-$view->show();
+$test = new HtmlDoc();
+$test->show();

@@ -2,8 +2,7 @@
 
 require_once "../Views/AboutDoc.php";
 
-$data = $menu = array("home"=>"Home","about"=>"About","contact"=>"Contact");
-$data = array ("page"=>"about","menu"=>$menu);
+$data = array("page"=>"about");
 
-$view = new AboutDoc($data);
-$view->show();
+$test = new AboutDoc($data);
+$test->show();
