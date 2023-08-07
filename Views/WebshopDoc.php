@@ -12,6 +12,17 @@ class WebshopDoc extends ProductsDoc {
         $this->products = $products;
     }
 
+    private function showProductCard($product) {
+        echo '<div class="column">';
+        $this->showProductDetailLinkStart($product["product_id"]);
+        $this->showProductImage($product["filename"]);
+        $this->showProductBrand($product["brand"]);
+        $this->showProductName($product["name"]);
+        $this->showProductPrice($product["price"]);
+        $this->showProductDetailLinkEnd();
+        $this->showAddToCart($product["product_id"]);
+        echo '</div>';
+    }
     protected function showContent() {
         $counter = 0;
 
