@@ -22,7 +22,7 @@ abstract class FormsDoc extends BasicDoc {
         echo '<form action="index.php" method="POST">';
         echo $this->showFormError("generic");
     }
-    protected function showFormField($field_name, $label, $type, $error_key, $options=NULL) {
+    protected function showFormField($field_name, $label, $type, $error_keys, $options=NULL) {
         switch ($type) {
             case "select":
                 echo '<label for="'.$field_name.'">'.$label.'</label>';
@@ -31,7 +31,9 @@ abstract class FormsDoc extends BasicDoc {
                     echo '<option value="'.$option.'">'.$option.'</option>';
                 }
                 echo '</select>';
-                echo $this->showFormError($error_key);
+                foreach ($error_keys as $error_key) {
+                    echo $this->showFormError($error_key);
+                }
                 break;
             case "radio":
                 echo '<fieldset>';
@@ -43,17 +45,24 @@ abstract class FormsDoc extends BasicDoc {
                     echo '</div>';
                 }
                 echo '</fieldset>';
-                echo $this->showFormError($error_key);
+                foreach ($error_keys as $error_key) {
+                    echo $this->showFormError($error_key);
+                }
                 break;
             case "textarea":
                 echo '<label for="'.$field_name.'">'.$label.'</label>';
                 echo '<textarea cols="30" rows="10" value=""></textarea>';
-                echo $this->showFormError($error_key);
+                foreach ($error_keys as $error_key) {
+                    echo $this->showFormError($error_key);
+                }
                 break;
             default:
                 echo '<label for="'.$field_name.'">'.$label.'</label>';
                 echo '<input type="'.$type.'" name="'.$field_name.'" value="'.$this->getValue($field_name).'">';
-                echo $this->showFormError($error_key);
+                foreach ($error_keys as $error_key) {
+                    echo $this->showFormError($error_key);
+                }
+                
         }
     }
     protected function showFormEnd($page_name, $submit_text) {
