@@ -16,6 +16,9 @@ abstract class ProductsDoc extends BasicDoc {
     protected function showProductName($product_name) {
         echo '<div class="name">'.$product_name.'</div>';
     }
+    protected function showProductDescription($description) {
+        echo '<p>'.$description.'</p>';
+    }
     protected function showProductDetailLinkStart($product_id) {
         echo '<a href="index.php?page=detail&product='.$product_id.'">';
     }

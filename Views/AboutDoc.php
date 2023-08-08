@@ -5,6 +5,7 @@ require_once "BasicDoc.php";
 class AboutDoc extends BasicDoc {
 
     protected function showContent() {
+        $this->showDivStart();
         echo '<h2>Quincy Tromp</h2>';
         echo '<img src="../Images/me.JPG" alt="A picture of me">';
         echo '<p>I\'m an application/software development trainee. My ambition is to become a data engineer.</p>';
@@ -17,5 +18,6 @@ class AboutDoc extends BasicDoc {
         echo '</ul>';
         echo '</p>';
         echo '<button class="click_btn" type="button"><a href="index.php?page=contact">Contact Me</a></button>';
+        $this->showDivEnd();
     }
 }

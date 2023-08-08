@@ -67,6 +67,16 @@ function addToCart($product_id, $amount=1) {
 
 
 /**
+ * Return products inside shopping cart
+ * 
+ * @return array: Shopping cart products
+ */
+function getShoppingCart() {
+    return $_SESSION["cart"];
+}
+
+
+/**
  * Unset product id inside session variable, and unset cart data if cart is empty
  */
 function removeFromCart($product_id) {

@@ -10,9 +10,9 @@ abstract class BasicDoc extends HtmlDoc {
     }
     private function getTitle() {
         $page_titles = array("home"=>"Home","about"=>"About","contact"=>"Contact",
-        "thanks"=>"Thank You","register"=>"Register","login"=>"Login",
+        "contact_thanks"=>"Thank You","register"=>"Register","login"=>"Login",
         "change_password"=>"Change Password","webshop"=>"Webshop","detail"=>"Detail",
-        "cart"=>"Shopping Cart","top5"=>"Top 5");
+        "shopping_cart"=>"Shopping Cart","order_thanks"=>"Thank You","top5"=>"Top 5");
         return $page_titles[$this->data["page"]];
     }
     private function showTitle() {
@@ -81,5 +81,16 @@ abstract class BasicDoc extends HtmlDoc {
     }
     protected function getArrayValue($data, $key) { 
         return isset($data[$key]) ? $data[$key] : ''; 
+    }
+    protected function showDivStart($class=NULL) {
+        if (is_null($class)) {
+            echo '<div>';
+        }
+        else {
+            echo '<div class="'.$class.'">';
+        }
+    }
+    protected function showDivEnd() {
+        echo '</div>';
     }
 }

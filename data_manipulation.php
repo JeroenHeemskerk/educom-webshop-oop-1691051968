@@ -158,7 +158,7 @@ function updatePassword($user_id, $new_password) {
  * 
  * @throws Exception: When unable to interact with database
  */
-function getProducts() {
+function getAllProducts() {
     $conn = connectToDatabase();
     $products = array();
     $sql = "SELECT `product_id`, `name`, `brand`, `description`, `price`, `filename` 
@@ -210,6 +210,41 @@ function getProductById($product_id) {
                 }
             }
         }
+    }
+    finally {
+        mysqli_close($conn);
+    }
+}
+
+
+/**
+ * Get products from database
+ * 
+ * @param array $product_id_array: The IDs of products
+ * 
+ * @return array $products: The products in database
+ * 
+ * @throws Exception: When unable to interact with database
+ */
+function getProductsByIds($product_id_array) {
+    $conn = connectToDatabase();
+    $product_id_array = '("'.implode('","', $product_id_array).'")';
+    $products = array();
+    $sql = "SELECT `product_id`, `name`, `brand`, `description`, `price`, `filename` 
+            FROM `product`
+            WHERE `product_id` IN $product_id_array;";
+
+    try {
+        $result = mysqli_query($conn, $sql);
+        if (!$result) {
+            throw new Exception("<br>Failed to select user data: " . mysql_error($conn));
+        }
+        if (mysqli_num_rows($result) > 0) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                $products[$row["product_id"]] = $row;
+            }
+        }
+        return $products;
     }
     finally {
         mysqli_close($conn);

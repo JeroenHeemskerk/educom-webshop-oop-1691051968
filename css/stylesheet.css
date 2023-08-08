@@ -87,8 +87,8 @@ h1 {
     text-decoration: none;
 }
 
-a:hover {
-    opacity: 0.75;
+a:hover, button:hover {
+    opacity: 0.7;
 }
 
 /***************************
@@ -121,6 +121,12 @@ a:hover {
             ABOUT
 ****************************/
 
+.about div {
+    padding: 10px;
+    margin: auto 8px 8px;
+    background-color: #F5EFE7;
+}
+
 .about h2 {
     margin-top: 0;
     font-family: 'Roboto Mono', monospace;
@@ -136,7 +142,7 @@ a:hover {
 }
 
 /***************************
-        CONTACT 
+            CONTACT 
 ****************************/
 
 form {
@@ -186,18 +192,8 @@ input, textarea, select, fieldset {
     color: red;
 }
 
-/* .thanks div {
-    margin-left: 50px;
-    margin-right: 50px;
-}
-
-.thanks h3, .thanks p {
-    margin-bottom: 0;
-    margin-left: 50px;
-} */
-
 /***************************
-        WEBSHOP 
+            WEBSHOP 
 ****************************/
 
 .webshop .column {
@@ -237,7 +233,7 @@ input, textarea, select, fieldset {
 }
 
 /***************************
-        DETAIL 
+            DETAIL 
 ****************************/
 
 .detail .row {
@@ -283,6 +279,10 @@ input, textarea, select, fieldset {
     margin-left: 0;
 }
 
+
+
+
+/* 
 
 
 
@@ -387,4 +387,4 @@ hr {
 .top_5 {
     color: black;
     font-weight: 550;
-}
+} */

@@ -13,22 +13,22 @@ class DetailDoc extends ProductsDoc {
     }
 
     protected function showContent() {
-        echo '<div class="row">';
-        echo '<div class="column">';
+        $this->showDivStart("row");
+        $this->showDivStart("column");
         $this->showProductImage($this->product["filename"]);
-        echo '</div>';
-        echo '<div class="column">';
+        $this->showDivEnd();
+        $this->showDivStart("column");
         $this->showProductBrand($this->product["brand"]);
         $this->showProductName($this->product["name"]);
         $this->showProductPrice($this->product["price"]);
         $this->showAddToCart($this->product["product_id"]);
-        echo '</div>';
-        echo '</div>';
-        echo '<div class="row">';
-        echo '<div class="column c2">';
+        $this->showDivEnd();
+        $this->showDivEnd();
+        $this->showDivStart("row");
+        $this->showDivStart("column c2");
         echo '<h4>Description</h4>';
-        echo '<p>'.$this->product["description"].'</p>';
-        echo '</div>';
-        echo '</div>';
+        $this->showProductDescription($this->product["description"]);
+        $this->showDivEnd();
+        $this->showDivEnd();
     }
 }
