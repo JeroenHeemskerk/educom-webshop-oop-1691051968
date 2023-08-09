@@ -16,7 +16,9 @@ class ContactDoc extends FormsDoc {
         $this->showFormEnd("contact","Submit");
     }
     private function showFormThanks() {
-        echo '<div>🙂<br>Thank you for reaching out, I\'ll get back to you soon</div>';
+        $this->showDivStart();
+        echo '<p>🙂<br>Thank you for reaching out, I\'ll get back to you soon</p>';
+        $this->showDivEnd();
         echo '<h3>Summary</h3>';
         echo '<p>';
         echo 'Gender: '.getValue("gender").'<br>';

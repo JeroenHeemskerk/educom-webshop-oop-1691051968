@@ -25,7 +25,7 @@ class DetailDoc extends ProductsDoc {
         $this->showDivEnd();
         $this->showDivEnd();
         $this->showDivStart("row");
-        $this->showDivStart("column c2");
+        $this->showDivStart("column d2");
         echo '<h4>Description</h4>';
         $this->showProductDescription($this->product["description"]);
         $this->showDivEnd();

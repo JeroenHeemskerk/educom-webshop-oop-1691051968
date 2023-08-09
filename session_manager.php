@@ -50,18 +50,24 @@ function logoutUser() {
 
 
 /**
+ * Return boolean to indicate if cart is empty or not
+ * 
+ * @return boolean: TRUE if cart is empty -or- FALSE if cart has product(s)
+ */
+function isShoppingCartEmpty() {
+    return !isset($_SESSION["cart"]);
+}
+
+
+/**
  * Set product order data inside session variable
  */
 function addToCart($product_id, $amount=1) {
-    if (isset($_SESSION["cart"])) {
-        $_SESSION["cart"][$product_id] = $amount;
-    }
-    else {
-        $_SESSION["cart"] = array();
-        $_SESSION["cart"][$product_id] = $amount;
-    }
     if ($amount == 0) {
         removeFromCart($product_id);
+    }
+    else {
+        $_SESSION["cart"][$product_id] = $amount;
     }
 }
 
@@ -81,7 +87,7 @@ function getShoppingCart() {
  */
 function removeFromCart($product_id) {
     unset($_SESSION["cart"][$product_id]);
-    if (empty($_SESSION["cart"])) {
+    if (isShoppingCartEmpty()) {
         emptyCart();
     }
 }

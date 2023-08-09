@@ -12,87 +12,90 @@ class ShoppingCartDoc extends ProductsDoc {
         $this->data = $data;
         $this->cart = $cart;
         $this->products = $products;
+        $this->total = 0;
     }
 
     private function showEmptyShoppingCart() {
         $this->showDivStart();
-        echo '🛒<br>You have no products in your cart';
+        echo '<p>🛒<br>You have no products in your cart</p>';
         $this->showDivEnd();
     }
     private function showQuantityDropdown($product_id, $quantity) {
         $this->showDivStart();
         echo '<form action="" method="POST">';
-        echo '<label for="quantity">Quantity</label>';
-        echo '<select id="quantity" name="quantity" onchange="this.form.submit()">';
-        echo '<option value="'.$quantity.'">'.$quantity.'</option>';
-        for ($count = 0; $count <= 10; $count++) {
-            echo '<option value="'.$count.'">'.$count.'</option>';
-        }
-        echo '</select>';
+        echo '<label for="quantity">Qty</label>';
+        echo '<input type="number" name="amount" value="'.$quantity.'" min="0" onchange="this.form.submit()">';
         echo '<input type="hidden" name="product_id" value="'.$product_id.'">';
-        echo '<input type="hidden" name="page" value="cart">';
+        echo '<input type="hidden" name="page" value="shopping_cart">';
         echo '</form>';
         $this->showDivEnd();
     }
     private function showShoppingCartLine($product_id,$product,$quantity,$subtotal) {
-        $this->showDivStart("product_order");
+        $this->showDivStart("cart_product");
+        $this->showDivStart("c1");
         $this->showProductDetailLinkStart($product_id);
         $this->showProductImage($product["filename"]);
         $this->showProductDetailLinkEnd();
-        $this->showDivStart("grid");
+        $this->showDivEnd();
+        $this->showDivStart("c2");
         $this->showDivStart();
         $this->showProductDetailLinkStart($product_id);
-        $this->showProductBrand($product["brand"]);
+        $this->showProductName($product["brand"]." ".$product["name"]);
         $this->showProductDetailLinkEnd();
         $this->showDivEnd();
+        $this->showDivStart("grid-2");
         $this->showQuantityDropdown($product_id, $quantity);
+        echo '<hr>';
         $this->showDivStart();
-        echo '<p>Each</p>';
-        $this->showProductPrice($product["price"]);
+        echo '<label>Each</label>';
+        echo '<p class="price_each">&euro;'.$product["price"].'</p>';
         $this->showDivEnd();
-        $this->showDivStart();
-        echo '<p>Subtotal</p>';
-        $this->showProductPrice($subtotal);
         $this->showDivEnd();
+        $this->showDivEnd();
+        $this->showDivStart("c3");
+        echo '<label>Subtotal</label>';
+        echo '<p class="subtotal">&euro;'.$subtotal.'</p>';
         $this->showDivEnd();
         $this->showDivEnd();
     }
     private function showShoppingCart() {
         $this->showDivStart("row");
-        $this->showDivStart("column");
+        $this->showDivStart("column f1");
         echo '<h3>Items</h3>';
-
-        $total = 0;
         foreach ($this->cart as $product_id => $quantity) {
             $product = $this->products[$product_id];
             $subtotal = number_format(($product["price"] * $quantity), 2, ".", "");
-            $total += $subtotal;
+            $this->total += $subtotal;
             $this->showShoppingCartLine($product_id,$product,$quantity,$subtotal);
         }
         $this->showDivEnd();
-        
-        $this->showDivStart("column");
+
+        $this->showDivStart("column f2");
         echo '<h3>Summary</h3>';
         $this->showDivStart();
-        echo '<p>Total</p>';
-        echo '<p>&euro; '.number_format($total, 2).'</p>';
+        echo '<p>Estimated Total</p>';
+        echo '<p class="r">&euro;'.number_format($this->total, 2).'</p>';
+        echo '<p>Discont</p>';
+        echo '<p class="r">&euro;0</p>';
+        echo '<p>Delivery</p>';
+        echo '<p class="r">&euro;0</p>';
+        echo '<p class="cb">Total</p>';
+        echo '<p class="r cb">&euro;'.number_format($this->total, 2).'</p>';
         $this->showDivEnd();
-        $this->showDivEnd();
-        $this->showDivEnd();
-        $this->showDivStart("row");
         echo '<button class="click_btn checkout" type="button"><a href="index.php?page=checkout">Checkout</a></button>';
+        $this->showDivEnd();
         $this->showDivEnd();
     }
     private function showCheckoutThanks() {
         $this->showDivStart();
-        echo '🛍️<br>Your order was completed successfully';
+        echo '<p>🛍️<br>Your order was completed successfully</p>';
         $this->showDivEnd();
     }
     protected function showContent() {
         if ($this->data["valid"]) {
             $this-showCheckoutThanks();
         }
-        elseif (!isset($_SESSION["cart"])) {
+        elseif (empty($this->cart)) {
             $this->showEmptyShoppingCart();
         }
         else {
