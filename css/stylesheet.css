@@ -290,7 +290,7 @@ input, textarea, select, fieldset {
     justify-content: flex-end;
 }
 
-.shopping_cart .f1 {
+.shopping_cart .items {
     flex: 90%;
     padding-left: 10px;
 }
@@ -353,29 +353,29 @@ input, textarea, select, fieldset {
     margin-top: 25px;
 }
 
-.shopping_cart .f2 {
+.shopping_cart .summary {
     padding-left: 10px;
     max-height: 300px;
 }
 
-.shopping_cart .f2 div {
+.shopping_cart .summary div {
     display: grid;
     grid-template-columns: 200px 100px;
 }
 
-.shopping_cart .f2 p {
+.shopping_cart .summary p {
     margin: 0;
     text-align: left;
     color: grey;
     font-size: 18px;
 }
 
-.shopping_cart .f2 .r {
+.shopping_cart .summary .r {
     text-align: right;
     margin-right: 8px;
 }
 
-.shopping_cart .f2 .cb {
+.shopping_cart .summary .cb {
     color: black;
     margin-top: 16px;
     margin-bottom: 50px;
@@ -388,8 +388,59 @@ input, textarea, select, fieldset {
     width: 290px;
 }
 
-/* 
+/***************************
+            TOP 5 
+****************************/
 
+.top5 .row {
+    display: flex;
+    margin-bottom: 12px;
+    margin-left: 12px;
+    margin-right: 12px;
+    column-gap: 12px;
+    justify-content: flex-start;
+}
+
+.top5 .column {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    max-width: 382px;
+}
+
+.top5 .column > * {
+    text-align: left;
+}
+
+.top5 .column .c2 {
+    margin: auto;
+    width: 100%;
+}
+
+.top5 .column img {
+    width: 87%;
+    margin: 10px;
+}
+
+.top5 .column a div {
+    font-size: 16px;
+    margin-right: 4px;
+}
+
+.top5 .column p {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 800;
+    color: black;
+    text-align: left;
+}
+
+.top5 .column a {
+    text-decoration: none;
+    margin-right: 4px;
+    text-align: left;
+}
+
+/* 
 .cart {
     color: white;
     font-size: large;
@@ -488,7 +539,7 @@ hr {
     text-align: center;
 }
 
-.top_5 {
+.top-5 {
     color: black;
     font-weight: 550;
 } */

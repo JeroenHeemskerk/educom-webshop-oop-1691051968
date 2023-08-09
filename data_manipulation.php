@@ -350,7 +350,7 @@ function insertProductOrder($product_id, $order_id, $quantity) {
  * 
  * @throws Exception: When unable to interact with database
  */
-function getTop5() {
+function getTop5Products() {
     $conn = connectToDatabase();
     $top_5 = array();
     $sql = "SELECT
@@ -366,7 +366,7 @@ function getTop5() {
             RIGHT JOIN `product` AS p 
                 ON p.product_id = po.product_id
 
-            WHERE YEARWEEK(date) = YEARWEEK(NOW() - INTERVAL 0 WEEK)
+            WHERE date >= DATE(NOW() - INTERVAL 7 DAY)
             GROUP BY po.product_id
             ORDER BY sold DESC
             LIMIT 5;";

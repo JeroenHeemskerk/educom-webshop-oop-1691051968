@@ -20,6 +20,11 @@ class ShoppingCartDoc extends ProductsDoc {
         echo '<p>🛒<br>You have no products in your cart</p>';
         $this->showDivEnd();
     }
+    private function showCheckoutThanks() {
+        $this->showDivStart();
+        echo '<p>🛍️<br>Your order was completed successfully</p>';
+        $this->showDivEnd();
+    }
     private function showQuantityDropdown($product_id, $quantity) {
         $this->showDivStart();
         echo '<form action="" method="POST">';
@@ -58,9 +63,9 @@ class ShoppingCartDoc extends ProductsDoc {
         $this->showDivEnd();
         $this->showDivEnd();
     }
-    private function showShoppingCart() {
+    private function showShoppingCartItems() {
         $this->showDivStart("row");
-        $this->showDivStart("column f1");
+        $this->showDivStart("column items");
         echo '<h3>Items</h3>';
         foreach ($this->cart as $product_id => $quantity) {
             $product = $this->products[$product_id];
@@ -69,13 +74,14 @@ class ShoppingCartDoc extends ProductsDoc {
             $this->showShoppingCartLine($product_id,$product,$quantity,$subtotal);
         }
         $this->showDivEnd();
-
-        $this->showDivStart("column f2");
+    }
+    private function showShoppingCartSummary() {
+        $this->showDivStart("column summary");
         echo '<h3>Summary</h3>';
         $this->showDivStart();
         echo '<p>Estimated Total</p>';
         echo '<p class="r">&euro;'.number_format($this->total, 2).'</p>';
-        echo '<p>Discont</p>';
+        echo '<p>Discount</p>';
         echo '<p class="r">&euro;0</p>';
         echo '<p>Delivery</p>';
         echo '<p class="r">&euro;0</p>';
@@ -86,10 +92,9 @@ class ShoppingCartDoc extends ProductsDoc {
         $this->showDivEnd();
         $this->showDivEnd();
     }
-    private function showCheckoutThanks() {
-        $this->showDivStart();
-        echo '<p>🛍️<br>Your order was completed successfully</p>';
-        $this->showDivEnd();
+    private function showShoppingCart() {
+        $this->showShoppingCartItems();
+        $this->showShoppingCartSummary();
     }
     protected function showContent() {
         if ($this->data["valid"]) {
