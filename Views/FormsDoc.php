@@ -80,5 +80,4 @@ abstract class FormsDoc extends BasicDoc {
         echo '<input class="submit" type="submit" value="'.$submit_text.'">';
         echo '</form>';
     }
-    abstract protected function showForm();
 }

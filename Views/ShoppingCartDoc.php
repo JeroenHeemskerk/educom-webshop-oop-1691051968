@@ -16,11 +16,6 @@ class ShoppingCartDoc extends ProductsDoc {
         echo '<p class="center">🛒<br>You have no products in your cart</p>';
         $this->showDivEnd();
     }
-    private function showCheckoutThanks() {
-        $this->showDivStart();
-        echo '<p class="center">🛍️<br>Your order was completed successfully</p>';
-        $this->showDivEnd();
-    }
     private function showQuantityDropdown($product_id, $quantity) {
         $this->showDivStart();
         echo '<form action="" method="POST">';
@@ -93,10 +88,7 @@ class ShoppingCartDoc extends ProductsDoc {
         $this->showShoppingCartSummary();
     }
     protected function showContent() {
-        if ($this->data["valid"]) {
-            $this->showCheckoutThanks();
-        }
-        elseif (empty($this->cart)) {
+        if (empty($this->cart)) {
             $this->showEmptyShoppingCart();
         }
         else {

@@ -100,8 +100,6 @@ function processRequest($page) {
             $data = validateCheckout();
             if ($data["valid"]) {
                 emptyCart();
-                $data["cart"] = NULL;
-                $data["products"] = NULL;
                 $page = "checkout_thanks";
             }
             break;
@@ -147,8 +145,8 @@ function showResponsePage($data) {
             $view->show();
             break;
         case "contact_thanks":
-            require "Views/ContactDoc.php";
-            $view = new ContactDoc($data);
+            require "Views/ContactThanksDoc.php";
+            $view = new ContactThanksDoc($data);
             $view->show();
             break;
         case "register":
@@ -182,8 +180,8 @@ function showResponsePage($data) {
             $view->show();
             break;
         case "checkout_thanks":
-            require "Views/ShoppingCartDoc.php";
-            $view = new ShoppingCartDoc($data);
+            require "Views/CheckoutThanksDoc.php";
+            $view = new CheckoutThanksDoc($data);
             $view->show();
             break;
         case "top5":
