@@ -3,13 +3,10 @@
 require_once "ProductsDoc.php";
 
 class TopFiveDoc extends ProductsDoc {
-    
-    protected $data;
-    protected $top_5_products;
 
-    public function __construct($data, $top_5_products) {
+    public function __construct($data) {
         $this->data = $data;
-        $this->top_5_products = $top_5_products;
+        $this->top_5_products = $data["top_5_products"];
     }
     private function showTopProduct($top_product) {
         $this->showDivStart("column");

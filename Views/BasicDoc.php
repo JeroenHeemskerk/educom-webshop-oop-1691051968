@@ -12,7 +12,7 @@ abstract class BasicDoc extends HtmlDoc {
         $page_titles = array("home"=>"Home","about"=>"About","contact"=>"Contact",
         "contact_thanks"=>"Thank You","register"=>"Register","login"=>"Login",
         "change_password"=>"Change Password","webshop"=>"Webshop","detail"=>"Detail",
-        "shopping_cart"=>"Shopping Cart","order_thanks"=>"Thank You","top5"=>"Top 5");
+        "shopping_cart"=>"Shopping Cart","checkout_thanks"=>"Thank You","top5"=>"Top 5");
         return $page_titles[$this->data["page"]];
     }
     private function showTitle() {
@@ -20,7 +20,7 @@ abstract class BasicDoc extends HtmlDoc {
     }
     private function showCssLink() {
         echo '<meta name="viewport" content="width=device-width, initial-scale=1.0">';
-        echo '<link rel="stylesheet" href="../CSS/stylesheet.css">';
+        echo '<link rel="stylesheet" href="CSS/stylesheet.css">';
         echo '<link rel="preconnect" href="https://fonts.googleapis.com">';
         echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>';
         echo '<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">';
@@ -29,13 +29,13 @@ abstract class BasicDoc extends HtmlDoc {
         echo '<li><button type="button"><a class="navlink" href="index.php?page='.$page_name.'">'.$button_text.'</a></button></li>';
     }
     private function getMenuItems() {
-        // if (isUserLoggedIn()) {
-        //     $firstname = ucfirst(explode(" ", getLoggedInUserName())[0]);
-        //     $menu = array("home"=>"Home","about"=>"About","contact"=>"Contact","change_password"=>"Change Password","logout"=>"Logout ".$firstname,"webshop"=>"Webshop","top5"=>"TOP 5","cart"=>"Shopping Cart");
-        // }
-        // else {
+        if (isUserLoggedIn()) {
+            $firstname = ucfirst(explode(" ", getLoggedInUserName())[0]);
+            $menu = array("home"=>"Home","about"=>"About","contact"=>"Contact","change_password"=>"Change Password","logout"=>"Logout ".$firstname,"webshop"=>"Webshop","top5"=>"TOP 5","shopping_cart"=>"Shopping Cart");
+        }
+        else {
             $menu = array("home"=>"Home","about"=>"About","contact"=>"Contact","register"=>"Register","login"=>"Login","webshop"=>"Webshop","top5"=>"TOP 5");
-        // }
+        }
         return $menu;
     }
     private function showMenu() {

@@ -21,18 +21,18 @@ class ContactDoc extends FormsDoc {
         $this->showDivEnd();
         echo '<h3>Summary</h3>';
         echo '<p>';
-        echo 'Gender: '.getValue("gender").'<br>';
-        echo 'Name: '.getValue("name").'<br>';
-        echo 'Email: '.getValue("email").'<br>';
-        echo 'Phone: '.getValue("phone").'<br>';
-        echo 'Subject: '.getValue("subject").'<br>';
-        echo 'Communicatioin preference: '.getValue("commpref").'<br>';
-        echo 'Message: '.getValue("message").'<br>';
+        echo 'Gender: '.$this->getValue("gender").'<br>';
+        echo 'Name: '.$this->getValue("name").'<br>';
+        echo 'Email: '.$this->getValue("email").'<br>';
+        echo 'Phone: '.$this->getValue("phone").'<br>';
+        echo 'Subject: '.$this->getValue("subject").'<br>';
+        echo 'Communicatioin preference: '.$this->getValue("commpref").'<br>';
+        echo 'Message: '.$this->getValue("message").'<br>';
         echo '</p>';
     }
     protected function showContent() {
         if ($this->data["valid"]) {
-            $this-showFormThanks();
+            $this->showFormThanks();
         }
         else {
             $this->showForm();

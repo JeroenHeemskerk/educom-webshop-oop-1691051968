@@ -3,7 +3,7 @@
 require "session_manager.php";
 require "validations.php";
 require "data_manipulation.php";
-require "UI/main.php";
+require "main.php";
 
 session_start();
 $page = getRequestedPage();
@@ -38,7 +38,7 @@ function processRequest($page) {
         case "contact":
             $data = validateContact($page);
             if ($data["valid"]) {
-                $page = "thanks";
+                $page = "contact_thanks";
             }
             break;
         case "register":
@@ -71,6 +71,7 @@ function processRequest($page) {
                 $product_id = getPostValue("product_id");
                 addToCart($product_id);
             }
+            $data["products"] = getAllProducts();
             break;
         case "detail":
             $product_id = getRequestedProductId();
@@ -82,23 +83,30 @@ function processRequest($page) {
                 addToCart($product_id);
             }
             break;
-        case "cart":
+        case "shopping_cart":
             if (requestMethodIsPost()) {
                 $product_id = getPostValue("product_id");
                 $quantity = getPostValue("quantity");
                 addToCart($product_id, $quantity);
             }
+            $data["valid"] = false;
+            $data["cart"] = getShoppingCart();
+            $data["products"] = getProductsByIds(array_keys($data["cart"]));
+            break;
+        case "top5":
+            $data["top_5_products"] = getTop5Products();
             break;
         case "checkout":
             $data = validateCheckout();
             if ($data["valid"]) {
                 emptyCart();
-                $page = "order";
+                $data["cart"] = NULL;
+                $data["products"] = NULL;
+                $page = "checkout_thanks";
             }
             break;
     }
     $data["page"] = $page;
-    $data["menu"] = getMenuItems();
     return $data;
 }
 
@@ -121,8 +129,69 @@ function getRequestedProductId() {
  * @param array $data : Relevant page data
  */
 function showResponsePage($data) {
-    showDocumentStart();
-    showHeadSection($data);
-    showBodySection($data);
-    showDocumentEnd();
+    // showError($data, "generic");
+    switch ($data["page"]) {
+       case "home":
+            require "Views/HomeDoc.php";
+            $view = new HomeDoc($data);
+            $view->show();
+            break;
+        case "about":
+            require "Views/AboutDoc.php";
+            $view = new AboutDoc($data);
+            $view->show();
+            break;
+        case "contact":
+            require "Views/ContactDoc.php";
+            $view = new ContactDoc($data);
+            $view->show();
+            break;
+        case "contact_thanks":
+            require "Views/ContactDoc.php";
+            $view = new ContactDoc($data);
+            $view->show();
+            break;
+        case "register":
+            require "Views/RegisterDoc.php";
+            $view = new RegisterDoc($data);
+            $view->show();
+            break;
+        case "login":
+            require "Views/LoginDoc.php";
+            $view = new LoginDoc($data);
+            $view->show();
+            break;
+        case "change_password":
+            require "Views/ChangePasswordDoc.php";
+            $view = new ChangePasswordDoc($data);
+            $view->show();
+            break;
+        case "webshop":
+            require "Views/WebshopDoc.php";
+            $view = new WebshopDoc($data);
+            $view->show();
+            break;
+        case "detail":
+            require "Views/DetailDoc.php";
+            $view = new DetailDoc($data);
+            $view->show();
+            break;
+        case "shopping_cart":
+            require "Views/ShoppingCartDoc.php";
+            $view = new ShoppingCartDoc($data);
+            $view->show();
+            break;
+        case "checkout_thanks":
+            require "Views/ShoppingCartDoc.php";
+            $view = new ShoppingCartDoc($data);
+            $view->show();
+            break;
+        case "top5":
+            require "Views/TopFiveDoc.php";
+            $view = new TopFiveDoc($data);
+            $view->show();
+            break;
+        default:
+            show404Page();
+    }
 }

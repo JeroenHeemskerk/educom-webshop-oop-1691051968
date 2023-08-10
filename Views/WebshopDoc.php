@@ -3,13 +3,10 @@
 require_once "ProductsDoc.php";
 
 class WebshopDoc extends ProductsDoc {
-    
-    protected $data;
-    protected $products;
 
-    public function __construct($data, $products) {
+    public function __construct($data) {
         $this->data = $data;
-        $this->products = $products;
+        $this->products = $data["products"];
     }
 
     protected function showProductCard($product) {

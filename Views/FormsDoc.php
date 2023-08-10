@@ -4,8 +4,8 @@ require_once "BasicDoc.php";
 
 abstract class FormsDoc extends BasicDoc {
 
-    private function getValue($error_key) {
-        return $this->getArrayValue($this->data["values"], $error_key);
+    protected function getValue($key) {
+        return $this->getArrayValue($this->data["values"], $key);
     }
     private function getError($error_key) {
         return $this->getArrayValue($this->data["errors"], $error_key);

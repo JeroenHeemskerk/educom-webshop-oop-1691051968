@@ -5,7 +5,7 @@ require_once "BasicDoc.php";
 abstract class ProductsDoc extends BasicDoc {
     
     protected function showProductImage($filename) {
-        echo '<img src="../Images/'.$filename.'" alt="picture of product">';
+        echo '<img src="Images/'.$filename.'" alt="picture of product">';
     }
     protected function showProductBrand($brand) {
         echo '<div class="brand">'.$brand.'</div>';

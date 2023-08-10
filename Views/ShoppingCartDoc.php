@@ -4,14 +4,10 @@ require_once "ProductsDoc.php";
 
 class ShoppingCartDoc extends ProductsDoc {
 
-    protected $data;
-    protected $cart;
-    protected $products;
-
-    public function __construct($data, $cart, $products) {
+    public function __construct($data) {
         $this->data = $data;
-        $this->cart = $cart;
-        $this->products = $products;
+        $this->cart = $data["cart"];
+        $this->products = $data["products"];
         $this->total = 0;
     }
 
@@ -29,7 +25,7 @@ class ShoppingCartDoc extends ProductsDoc {
         $this->showDivStart();
         echo '<form action="" method="POST">';
         echo '<label for="quantity">Qty</label>';
-        echo '<input type="number" name="amount" value="'.$quantity.'" min="0" onchange="this.form.submit()">';
+        echo '<input type="number" name="quantity" value="'.$quantity.'" min="0" onchange="this.form.submit()">';
         echo '<input type="hidden" name="product_id" value="'.$product_id.'">';
         echo '<input type="hidden" name="page" value="shopping_cart">';
         echo '</form>';
@@ -69,7 +65,7 @@ class ShoppingCartDoc extends ProductsDoc {
         echo '<h3>Items</h3>';
         foreach ($this->cart as $product_id => $quantity) {
             $product = $this->products[$product_id];
-            $subtotal = number_format(($product["price"] * $quantity), 2, ".", "");
+            $subtotal = number_format(((float)$product["price"] * (int)$quantity), 2, ".", "");
             $this->total += $subtotal;
             $this->showShoppingCartLine($product_id,$product,$quantity,$subtotal);
         }
@@ -98,7 +94,7 @@ class ShoppingCartDoc extends ProductsDoc {
     }
     protected function showContent() {
         if ($this->data["valid"]) {
-            $this-showCheckoutThanks();
+            $this->showCheckoutThanks();
         }
         elseif (empty($this->cart)) {
             $this->showEmptyShoppingCart();

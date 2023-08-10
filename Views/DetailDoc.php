@@ -4,12 +4,9 @@ require_once "ProductsDoc.php";
 
 class DetailDoc extends ProductsDoc {
 
-    protected $data;
-    protected $product;
-
-    public function __construct($data, $product) {
+    public function __construct($data) {
         $this->data = $data;
-        $this->product = $product;
+        $this->product = $data["product"];
     }
 
     protected function showContent() {

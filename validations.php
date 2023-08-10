@@ -270,7 +270,7 @@ function doesProductExist($product_id) {
  */
 function validateCheckout() {
     $data = array("errors"=>array(),"valid"=>false);
-    $cart = $_SESSION["cart"];
+    $cart = getShoppingCart();
 
     try {
         storeOrder(getLoggedInUserId());

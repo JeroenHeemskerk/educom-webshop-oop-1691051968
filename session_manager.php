@@ -78,6 +78,9 @@ function addToCart($product_id, $amount=1) {
  * @return array: Shopping cart products
  */
 function getShoppingCart() {
+    if (isShoppingCartEmpty()) {
+        return NULL;
+    }
     return $_SESSION["cart"];
 }
 
@@ -97,5 +100,5 @@ function removeFromCart($product_id) {
  * Unset cart data inside session variable
  */
 function emptyCart() {
-    unset($_SESSION["cart"]);
+    $_SESSION["cart"] = [];
 }
