@@ -28,7 +28,12 @@ abstract class FormsDoc extends BasicDoc {
                 echo '<label for="'.$field_name.'">'.$label.'</label>';
                 echo '<select name="'.$field_name.'">';
                 foreach ($options as $option) {
-                    echo '<option value="'.$option.'">'.$option.'</option>';
+                    if ($option == $this->getValue($field_name)) {
+                        echo '<option value="'.$option.'" selected="selected">'.$option.'</option>';
+                    }
+                    else {
+                        echo '<option value="'.$option.'">'.$option.'</option>';
+                    }
                 }
                 echo '</select>';
                 foreach ($error_keys as $error_key) {
@@ -40,7 +45,12 @@ abstract class FormsDoc extends BasicDoc {
                 echo '<legend>'.$label.'</legend>';
                 foreach ($options as $option) {
                     echo '<div class="radio_btn">';
-                    echo '<input type="'.$type.'" name="'.$field_name.'" value="'.$option.'">';
+                    if ($option == $this->getValue($field_name)) {
+                        echo '<input type="'.$type.'" name="'.$field_name.'" value="'.$option.'" checked="checked">';
+                    }
+                    else {
+                        echo '<input type="'.$type.'" name="'.$field_name.'" value="'.$option.'">';
+                    }
                     echo '<label for="'.$option.'">'.$option.'</label>';
                     echo '</div>';
                 }
@@ -51,7 +61,7 @@ abstract class FormsDoc extends BasicDoc {
                 break;
             case "textarea":
                 echo '<label for="'.$field_name.'">'.$label.'</label>';
-                echo '<textarea cols="30" rows="10" value=""></textarea>';
+                echo '<textarea name="'.$field_name.'" cols="30" rows="10" value="">'.$this->getValue($field_name).'</textarea>';
                 foreach ($error_keys as $error_key) {
                     echo $this->showFormError($error_key);
                 }

@@ -19,7 +19,7 @@ class ContactDoc extends FormsDoc {
         $this->showDivStart();
         echo '<p class="center">🙂<br>Thank you for reaching out, I\'ll get back to you soon</p>';
         $this->showDivEnd();
-        echo '<h3>Summary</h3>';
+        echo '<h3 class="center">Summary</h3>';
         echo '<p class="center">';
         echo 'Gender: '.$this->getValue("gender").'<br>';
         echo 'Name: '.$this->getValue("name").'<br>';

@@ -166,6 +166,7 @@ label, select {
 fieldset {
     margin: 0;
     padding: 0;
+    border-color: white;
 }
 
 input, textarea, select, fieldset {

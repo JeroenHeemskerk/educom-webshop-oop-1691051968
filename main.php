@@ -208,7 +208,7 @@ function requestMethodIsPost() {
  * @return array: The form fields
  */
 function getFormFields($page) {
-    $fields = array("contact"=>array("gender"=>"","name"=>"","email"=>"","phone"=>"","subject"=>"","communication_preference"=>"","message"=>""),
+    $fields = array("contact"=>array("gender"=>"","name"=>"","email"=>"","phone"=>"","subject"=>"","commpref"=>"","message"=>""),
                     "register"=>array("email"=>"","name"=>"","password"=>"","confirm_password"=>""),
                     "login"=>array("email"=>"","password"=>""),
                     "change_password"=>array("current_password"=>"","new_password"=>"","confirm_new_password"=>""));
