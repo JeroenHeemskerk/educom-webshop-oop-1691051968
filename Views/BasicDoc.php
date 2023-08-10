@@ -3,17 +3,23 @@
 require_once "HtmlDoc.php";
 
 abstract class BasicDoc extends HtmlDoc {
-    protected $data;
+    protected $model;
 
-    public function __construct($data) {
-        $this->data = $data;
+    public function __construct($model) {
+        $this->model = $model;
     }
     private function getTitle() {
-        $page_titles = array("home"=>"Home","about"=>"About","contact"=>"Contact",
+        $page_titles = array("basic"=>"Basic","home"=>"Home","about"=>"About","contact"=>"Contact",
         "contact_thanks"=>"Thank You","register"=>"Register","login"=>"Login",
         "change_password"=>"Change Password","webshop"=>"Webshop","detail"=>"Detail",
         "shopping_cart"=>"Shopping Cart","checkout_thanks"=>"Thank You","top5"=>"Top 5");
-        return $page_titles[$this->data["page"]];
+        if (array_key_exists($this->model->page, $page_titles)) {
+            return $page_titles[$this->model->page];
+        }
+        else {
+            return "404";
+        }
+        
     }
     private function showTitle() {
         echo '<title>'.$this->getTitle().'</title>';
@@ -54,7 +60,7 @@ abstract class BasicDoc extends HtmlDoc {
     }
     private function showContentStart() {
         echo '<div class="content">';
-        echo '<div class="'.$this->data["page"].'">';
+        echo '<div class="'.$this->model->page.'">';
         echo '<h1>'.$this->getTitle().'</h1>';
     }
     abstract protected function showContent();

@@ -20,7 +20,7 @@ abstract class FormsDoc extends BasicDoc {
     }
     protected function showFormStart() {
         echo '<form action="index.php" method="POST">';
-        echo $this->showFormError("generic");
+        echo $this->showFormError("genericErr");
     }
     protected function showFormField($field_name, $label, $type, $error_keys, $options=NULL) {
         switch ($type) {

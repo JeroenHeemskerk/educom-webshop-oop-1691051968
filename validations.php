@@ -1,5 +1,20 @@
 <?php
 
+
+/**
+ * Get the correct form fields depending on requested page
+ * 
+ * @return array: The form fields
+ */
+function getFormFields($page) {
+    $fields = array("contact"=>array("gender"=>"","name"=>"","email"=>"","phone"=>"","subject"=>"","commpref"=>"","message"=>""),
+                    "register"=>array("email"=>"","name"=>"","password"=>"","confirm_password"=>""),
+                    "login"=>array("email"=>"","password"=>""),
+                    "change_password"=>array("current_password"=>"","new_password"=>"","confirm_new_password"=>""));
+    return $fields[$page];
+}
+
+
 /**
  * Clean input for security reason
  * 
@@ -99,7 +114,7 @@ function checkForError($data) {
  */
 function validateContact($page) {
     $data = array("values"=>getFormFields($page),"errors"=>array(),"valid"=>false);
-    if (requestMethodIsPost()) {
+    if (isPost()) {
         $data["page"] = getPostValue("page");
         $data = startValidate($data);
         $data = checkForError($data);
@@ -135,7 +150,7 @@ function doesEmailExist($email) {
 function validateRegister($page) {
     $data = array("values"=>getFormFields($page),"errors"=>array(),"valid"=>false);
 
-    if (requestMethodIsPost()) {
+    if (isPost()) {
         $data["page"] = getPostValue("page");
         $data = startValidate($data);
         try {
@@ -149,7 +164,7 @@ function validateRegister($page) {
             }
         }
         catch (Exception $e) {
-            $data["errors"]["generic"] = 'Due to technical error, we cannot proceed with this process';
+            $data["errors"]["genericErr"] = 'Due to technical error, we cannot proceed with this process';
             showLog($e->getMessage());
         }
         $data = checkForError($data);
@@ -173,7 +188,7 @@ function validateRegister($page) {
  */
 function validateLogin($page) {
     $data = array("values"=>getFormFields($page),"errors"=>array(),"user"=>array(),"valid"=>false);
-    if (requestMethodIsPost()) {
+    if (isPost()) {
         $data["page"] = getPostValue("page");
         $data = startValidate($data);
         try {
@@ -194,7 +209,7 @@ function validateLogin($page) {
             }   
         }
         catch (Exception $e) {
-            $data["errors"]["generic"] = 'Due to technical error, we cannot proceed with this process';
+            $data["errors"]["genericErr"] = 'Due to technical error, we cannot proceed with this process';
             showLog($e->getMessage());
         }
         $data = checkForError($data);
@@ -219,7 +234,7 @@ function validateLogin($page) {
 function validateNewPassword($page) {
     $data = array("values"=>getFormFields($page),"errors"=>array(),"user"=>array(),"valid"=>false);
 
-    if (requestMethodIsPost()) {
+    if (isPost()) {
         if (isUserLoggedIn()) {
             $data["page"] = getPostValue("page");
             $data = startValidate($data);
@@ -238,7 +253,7 @@ function validateNewPassword($page) {
                 }
             }
             catch (Exception $e) {
-                $data["errors"]["generic"] = 'Due to technical error, we cannot proceed with this process';
+                $data["errors"]["genericErr"] = 'Due to technical error, we cannot proceed with this process';
                 showLog($e->getMessage());
             }
             $data = checkForError($data);
@@ -280,7 +295,7 @@ function validateCheckout() {
         }
     }
     catch (Exception $e) {
-        $data["errors"]["generic"] = 'Due to technical error, we cannot proceed with this process';
+        $data["errors"]["genericErr"] = 'Due to technical error, we cannot proceed with this process';
         showLog($e->getMessage());
     }
     $data = checkForError($data);
