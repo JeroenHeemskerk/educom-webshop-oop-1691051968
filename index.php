@@ -2,7 +2,7 @@
 
 require "session_manager.php";
 require "validations.php";
-require "data_manipulation.php";
+require "db_repository.php";
 require "main.php";
 
 session_start();
