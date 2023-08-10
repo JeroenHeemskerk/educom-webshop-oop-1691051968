@@ -17,10 +17,10 @@ class ContactDoc extends FormsDoc {
     }
     private function showFormThanks() {
         $this->showDivStart();
-        echo '<p>🙂<br>Thank you for reaching out, I\'ll get back to you soon</p>';
+        echo '<p class="center">🙂<br>Thank you for reaching out, I\'ll get back to you soon</p>';
         $this->showDivEnd();
         echo '<h3>Summary</h3>';
-        echo '<p>';
+        echo '<p class="center">';
         echo 'Gender: '.$this->getValue("gender").'<br>';
         echo 'Name: '.$this->getValue("name").'<br>';
         echo 'Email: '.$this->getValue("email").'<br>';

@@ -13,12 +13,12 @@ class ShoppingCartDoc extends ProductsDoc {
 
     private function showEmptyShoppingCart() {
         $this->showDivStart();
-        echo '<p>🛒<br>You have no products in your cart</p>';
+        echo '<p class="center">🛒<br>You have no products in your cart</p>';
         $this->showDivEnd();
     }
     private function showCheckoutThanks() {
         $this->showDivStart();
-        echo '<p>🛍️<br>Your order was completed successfully</p>';
+        echo '<p class="center">🛍️<br>Your order was completed successfully</p>';
         $this->showDivEnd();
     }
     private function showQuantityDropdown($product_id, $quantity) {

@@ -91,6 +91,10 @@ a:hover, button:hover {
     opacity: 0.7;
 }
 
+.center {
+    text-align: center;
+}
+
 /***************************
             HOME
 ****************************/
