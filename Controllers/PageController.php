@@ -1,6 +1,7 @@
 <?php
 
 require_once "Models/PageModel.php";
+require_once "Models/UserModel.php";
 
 class PageController {
 
@@ -21,7 +22,13 @@ class PageController {
     // business flow code 
     private function processRequest() {
         switch ($this->model->page) {
-            ###
+            case "contact":
+                $this->model = new UserModel($this->model);
+                $this->model->validateContact();
+                if ($this->model->valid) {
+                    $this->model->setPage("contact_thanks");
+                }
+                break;
         }
     }
     // to client: presentation tier

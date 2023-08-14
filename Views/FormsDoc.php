@@ -5,10 +5,10 @@ require_once "BasicDoc.php";
 abstract class FormsDoc extends BasicDoc {
 
     protected function getValue($key) {
-        return $this->getArrayValue($this->data["values"], $key);
+        return $this->getArrayValue($this->model->values, $key);
     }
     private function getError($error_key) {
-        return $this->getArrayValue($this->data["errors"], $error_key);
+        return $this->getArrayValue($this->model->errors, $error_key);
     }
     private function showFormError($error_key) {
         if (empty($this->getError($error_key))) {

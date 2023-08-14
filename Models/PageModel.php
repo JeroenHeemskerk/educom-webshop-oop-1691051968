@@ -9,9 +9,12 @@ class PageModel {
     public $page;
     protected $isPost = false;
     public $menu;
+    public $values = array();
+    public $user = array();
     public $errors = array();
     public $genericErr = "";
-    protected $sessionManager;
+    public $valid = false;
+    public $sessionManager;
 
     public function __construct($copy) {
         if (empty($copy)) {
@@ -21,11 +24,13 @@ class PageModel {
             $this->page = $copy->page;
             $this->isPost = $copy->isPost;
             $this->menu = $copy->menu;
+            $this->values = $copy->values;
             $this->genericErr = $copy->genericErr;
+            $this->valid = $copy->valid;
             $this->sessionManager = $copy->sessionManager;
         }
     }
-    protected function setPage($newPage) {
+    public function setPage($newPage) {
         $this->page = $newPage;
     }                
     public function getRequestedPage() {

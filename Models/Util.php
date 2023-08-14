@@ -17,4 +17,7 @@ class Util {
     public static function getUrlValue($key, $default="") {
         return isset($_GET[$key]) ? Util::cleanInput($_GET[$key]) : $default;
     }
+    public static function showLog($message) {
+        echo $message;
+    }
 }
