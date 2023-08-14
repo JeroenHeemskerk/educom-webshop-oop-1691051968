@@ -1,8 +1,5 @@
 <?php
 
-
-
-
 session_start();
 require_once "Controllers/PageController.php";
 

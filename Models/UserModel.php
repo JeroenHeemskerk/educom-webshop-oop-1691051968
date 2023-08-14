@@ -2,6 +2,7 @@
 
 require_once "PageModel.php";
 require_once "Util.php";
+require_once "db_repository.php";
 
 class UserModel extends PageModel {
 
@@ -40,7 +41,7 @@ class UserModel extends PageModel {
                     }
                     break;
                 case "confirm_password":
-                    if (!$this->values->password == $this->values->confirm_password) {
+                    if (!$this->values["password"] == $this->values["confirm_password"]) {
                         $this->errors["confirm_password"] = "Passwords do not match. Try again";
                     }
                     break;
@@ -59,7 +60,7 @@ class UserModel extends PageModel {
             $this->valid = true;
         }
     }
-    public function validateContact() {
+    public function validateContactForm() {
         $this->setFormValues();
         if (Util::isPost()) {
             $this->setPage(Util::getPostValue("page"));
@@ -68,55 +69,89 @@ class UserModel extends PageModel {
         }
     } 
     //
+    private function isEmailNotEmpty() {
+        return (!empty($this->values["email"]));
+    }
     public function doesEmailExist($email) {
         return (!is_null(findUserByEmail($email)));
     }
-    public function validateRegister() {
+    private function recordGenericError() {
+        $this->errors["genericErr"] = 'Due to technical error, we cannot proceed with this process';
+    }
+    public function validateRegisterForm() {
         $this->setFormValues();
         if (Util::isPost()) {
-            $this->setPage(getPostValue("page"));
+            $this->setPage(Util::getPostValue("page"));
             $this->ValidateForm();
             try {
-                if (!empty($this->values->email)) {
+                if ($this->isEmailNotEmpty()) {
                     if ($this->doesEmailExist($this->values->email)) {
                         $this->errors["user_already_exists"] = "Email already exists";
                     }
                 }
             }
             catch (Exception $e) {
-                $this->errors["genericErr"] = 'Due to technical error, we cannot proceed with this process';
+                $this->recordGenericError();
                 Util::showLog($e->getMessage());
             }
-            checkForError();
+            $this->checkForError();
         }
     }
-    function validateLogin() {
+    public function validateLoginForm() {
         $this->setFormValues();
         if (Util::isPost()) {
-            $this->setPage(getPostValue("page"));
+            $this->setPage(Util::getPostValue("page"));
             $this->ValidateForm();
             try {
-                if (!empty($this->values->email)) {
-                    if (!doesEmailExist($this->values->email)) {
+                if ($this->isEmailNotEmpty()) {
+                    if (!$this->doesEmailExist($this->values["email"])) {
                         $this->errors["no_existing_user"] = "This user doesn't seem to exist";
                     }
                     else {
-                        $user = findUserByEmail($this->values->email);
-                        if (!$data["values"]["password"] == $user["password"]) {
-                            $data["errors"]["authentication"] = "Your password is incorrect";
+                        $user = findUserByEmail($this->values["email"]);
+                        if (!$this->values["password"] == $user["password"]) {
+                            $this->errors["authentication"] = "Your password is incorrect";
                         }
                         else {
-                            $data["user"]["user_id"] = $user["user_id"];
-                            $data["user"]["name"] = $user["name"];
+                            $this->user["user_id"] = $user["user_id"];
+                            $this->user["name"] = $user["name"];
                         }
                     }
                 }   
             }
             catch (Exception $e) {
-                $this->errors["genericErr"] = 'Due to technical error, we cannot proceed with this process';
+                $this->recordGenericError();
                 Util::showLog($e->getMessage());
             }
             $this->checkForError();
+        }
+    }
+    public function validateChangePasswordForm() {
+        $this->setFormValues();
+        if (Util::isPost()) {
+            if ($this->sessionManager->isUserLoggedIn()) {
+                $this->setPage(Util::getPostValue("page"));
+                $this->ValidateForm();
+
+                try {
+                    $user = findUserById($this->sessionManager->getLoggedInUserId());
+                    if ($this->values["current_password"] != $user["password"]) { 
+                        $this->errors["current_password"] = "Your password is incorrect";
+                    }
+                    elseif ($this->values["new_password"] != $this->values["confirm_new_password"]) {
+                            $this->errors["confirm_new_password"] = "Passwords do not match. Try again";
+                    }
+                    else {
+                        $this->user["user_id"] = $user["user_id"];
+                        $this->user["name"] = $user["name"];
+                    }
+                }
+                catch (Exception $e) {
+                    $this->recordGenericError();
+                    Util::showLog($e->getMessage());
+                }
+                $this->checkForError();
+            }
         }
     }
 }
