@@ -2,6 +2,7 @@
 
 require_once "Models/PageModel.php";
 require_once "Models/UserModel.php";
+require_once "Models/ShopModel.php";
 
 class PageController {
 
@@ -41,7 +42,7 @@ class PageController {
                 $this->model = new UserModel($this->model);
                 $this->model->validateLoginForm();
                 if ($this->model->valid) {
-                    $this->model->sessionManager->LoginUser($this->model->user);
+                    $this->model->session_manager->LoginUser($this->model->user);
                     $this->model->setPage("home");
                 }
                 break;
@@ -54,8 +55,26 @@ class PageController {
                 }
                 break;
             case "logout":
-                $this->model->sessionManager->LogoutUser();
+                $this->model->session_manager->logoutUser();
                 $this->model->setPage("home");
+                break;
+            case "webshop":
+                $this->model = new ShopModel($this->model);
+                $this->model->products = getAllProducts();
+                if (Util::isPost()) {
+                    $this->model->session_manager->addToCart(Util::getPostValue("product_id"));
+                }
+                break;
+            case "detail":
+                $this->model = new ShopModel($this->model);
+                $product_id = Util::getUrlValue("product_id");
+                if ($this->model->doesProductExist($product_id)) {
+                    $this->model->product = getProductById($product_id);
+                }
+                if (Util::isPost()) {
+                    $product_id = Util::getPostValue("product_id");
+                    $this->model->session_manager->addToCart($product_id);
+                }
                 break;
         }
     }

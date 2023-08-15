@@ -19,4 +19,30 @@ class SessionManager {
         unset($_SESSION["user_name"]);
         unset($_SESSION["user_id"]);
     }
+    public function addToCart($product_id, $amount=1) {
+        if ($amount == 0) {
+            removeFromCart($product_id);
+        }
+        else {
+            $_SESSION["cart"][$product_id] = $amount;
+        }
+    }
+    public function removeFromCart($product_id) {
+        unset($_SESSION["cart"][$product_id]);
+        if (isShoppingCartEmpty()) {
+            emptyCart();
+        }
+    }
+    public function isShoppingCartEmpty() {
+        return !isset($_SESSION["cart"]);
+    }
+    public function getShoppingCart() {
+        if (isShoppingCartEmpty()) {
+            return NULL;
+        }
+        return $_SESSION["cart"];
+    }
+    public function emptyCart() {
+        $_SESSION["cart"] = [];
+    }
 }

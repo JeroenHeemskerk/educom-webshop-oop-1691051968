@@ -6,8 +6,8 @@ require_once "db_repository.php";
 
 class UserModel extends PageModel {
 
-    public function __construct($pageModel) {
-        PARENT::__construct($pageModel);
+    public function __construct($model) {
+        PARENT::__construct($model);
     }
     private function getFormFields() {
         $form_fields = array("contact"=>array("gender"=>"","name"=>"","email"=>"","phone"=>"","subject"=>"","commpref"=>"","message"=>""),
@@ -67,8 +67,7 @@ class UserModel extends PageModel {
             $this->ValidateForm();
             $this->checkForError();
         }
-    } 
-    //
+    }
     private function isEmailNotEmpty() {
         return (!empty($this->values["email"]));
     }
@@ -129,12 +128,12 @@ class UserModel extends PageModel {
     public function validateChangePasswordForm() {
         $this->setFormValues();
         if (Util::isPost()) {
-            if ($this->sessionManager->isUserLoggedIn()) {
+            if ($this->session_manager->isUserLoggedIn()) {
                 $this->setPage(Util::getPostValue("page"));
                 $this->ValidateForm();
 
                 try {
-                    $user = findUserById($this->sessionManager->getLoggedInUserId());
+                    $user = findUserById($this->session_manager->getLoggedInUserId());
                     if ($this->values["current_password"] != $user["password"]) { 
                         $this->errors["current_password"] = "Your password is incorrect";
                     }

@@ -14,11 +14,13 @@ class PageModel {
     public $errors = array();
     public $genericErr = "";
     public $valid = false;
-    public $sessionManager;
+    public $session_manager;
+    public $products = array();
+    public $product;
 
     public function __construct($copy) {
         if (empty($copy)) {
-            $this->sessionManager = new SessionManager();
+            $this->session_manager = new SessionManager();
         }
         else {
             $this->page = $copy->page;
@@ -27,15 +29,17 @@ class PageModel {
             $this->values = $copy->values;
             $this->genericErr = $copy->genericErr;
             $this->valid = $copy->valid;
-            $this->sessionManager = $copy->sessionManager;
+            $this->session_manager = $copy->session_manager;
+            $this->user = $copy->user;
+            $this->products = $copy->products;
+            $this->product = $copy->product;
         }
     }
-    public function setPage($newPage) {
-        $this->page = $newPage;
+    public function setPage($new_page) {
+        $this->page = $new_page;
     }                
     public function getRequestedPage() {
         $this->isPost = (Util::isPost());
-
         if ($this->isPost) {
             $this->setPage(Util::getPostValue("page","home"));
         }
@@ -50,9 +54,9 @@ class PageModel {
         $this->menu["webshop"] = new MenuItem("webshop", "Webshop");
         $this->menu["top5"] = new MenuItem("top5", "TOP 5");
 
-        if ($this->sessionManager->isUserLoggedIn()) {
+        if ($this->session_manager->isUserLoggedIn()) {
             $this->menu["change_password"] = new MenuItem("change_password", "Change Password");
-            $this->menu["logout"] = new MenuItem("logout", "Logout ".$this->sessionManager->getLoggedInUserName());
+            $this->menu["logout"] = new MenuItem("logout", "Logout ".$this->session_manager->getLoggedInUserName());
             $this->menu["shopping_cart"] = new MenuItem("shopping_cart", 'Shopping Cart');
         } 
         else {

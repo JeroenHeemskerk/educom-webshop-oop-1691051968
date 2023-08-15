@@ -3,6 +3,7 @@
 require_once "HtmlDoc.php";
 
 abstract class BasicDoc extends HtmlDoc {
+    
     protected $model;
 
     public function __construct($model) {
@@ -35,8 +36,8 @@ abstract class BasicDoc extends HtmlDoc {
         echo '<li><button type="button"><a class="navlink" href="index.php?page='.$page_name.'">'.$button_text.'</a></button></li>';
     }
     private function getMenuItems() {
-        if ($this->model->sessionManager->isUserLoggedIn()) {
-            $firstname = ucfirst(explode(" ", $this->model->sessionManager->getLoggedInUserName())[0]);
+        if ($this->model->session_manager->isUserLoggedIn()) {
+            $firstname = ucfirst(explode(" ", $this->model->session_manager->getLoggedInUserName())[0]);
             $menu = array("home"=>"Home","about"=>"About","contact"=>"Contact","change_password"=>"Change Password","logout"=>"Logout ".$firstname,"webshop"=>"Webshop","top5"=>"TOP 5","shopping_cart"=>"Shopping Cart");
         }
         else {
