@@ -4,10 +4,6 @@ require_once "ProductsDoc.php";
 
 class TopFiveDoc extends ProductsDoc {
 
-    public function __construct($data) {
-        $this->data = $data;
-        $this->top_5_products = $data["top_5_products"];
-    }
     private function showTopProduct($top_product) {
         $this->showDivStart("column");
         $this->showDivStart("c1");
@@ -29,7 +25,7 @@ class TopFiveDoc extends ProductsDoc {
 
         echo '<h3>Most sold products in the last 7 days</h3>';
         $this->showDivStart();
-        foreach ($this->top_5_products as $product_id => $top_product) {
+        foreach ($this->model->top_5_products as $product_id => $top_product) {
             if ($counter % 2 == 0) {
                 $this->showDivStart("row");
                 $this->showTopProduct($top_product);

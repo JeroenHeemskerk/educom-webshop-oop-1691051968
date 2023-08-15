@@ -9,6 +9,7 @@ abstract class BasicDoc extends HtmlDoc {
     public function __construct($model) {
         $this->model = $model;
     }
+    
     private function getTitle() {
         $page_titles = array("basic"=>"Basic","home"=>"Home","about"=>"About","contact"=>"Contact",
         "contact_thanks"=>"Thank You","register"=>"Register","login"=>"Login",

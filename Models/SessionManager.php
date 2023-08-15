@@ -21,7 +21,7 @@ class SessionManager {
     }
     public function addToCart($product_id, $amount=1) {
         if ($amount == 0) {
-            removeFromCart($product_id);
+            $this->removeFromCart($product_id);
         }
         else {
             $_SESSION["cart"][$product_id] = $amount;
@@ -29,15 +29,15 @@ class SessionManager {
     }
     public function removeFromCart($product_id) {
         unset($_SESSION["cart"][$product_id]);
-        if (isShoppingCartEmpty()) {
-            emptyCart();
+        if ($this->isShoppingCartEmpty()) {
+            $this->emptyCart();
         }
     }
     public function isShoppingCartEmpty() {
         return !isset($_SESSION["cart"]);
     }
     public function getShoppingCart() {
-        if (isShoppingCartEmpty()) {
+        if ($this->isShoppingCartEmpty()) {
             return NULL;
         }
         return $_SESSION["cart"];

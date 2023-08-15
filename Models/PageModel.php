@@ -9,14 +9,9 @@ class PageModel {
     public $page;
     protected $isPost = false;
     public $menu;
-    public $values = array();
-    public $user = array();
-    public $errors = array();
     public $genericErr = "";
     public $valid = false;
     public $session_manager;
-    public $products = array();
-    public $product;
 
     public function __construct($copy) {
         if (empty($copy)) {
@@ -26,13 +21,9 @@ class PageModel {
             $this->page = $copy->page;
             $this->isPost = $copy->isPost;
             $this->menu = $copy->menu;
-            $this->values = $copy->values;
             $this->genericErr = $copy->genericErr;
             $this->valid = $copy->valid;
             $this->session_manager = $copy->session_manager;
-            $this->user = $copy->user;
-            $this->products = $copy->products;
-            $this->product = $copy->product;
         }
     }
     public function setPage($new_page) {
@@ -63,5 +54,8 @@ class PageModel {
             $this->menu["register"] = new MenuItem("register", "Register");
             $this->menu["login"] = new MenuItem("login", "Login");
         }
+    }
+    protected function recordGenericError() {
+        $this->errors["genericErr"] = 'Due to technical error, we cannot proceed with this process';
     }
 }

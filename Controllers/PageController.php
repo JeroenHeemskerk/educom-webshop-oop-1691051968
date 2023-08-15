@@ -76,6 +76,28 @@ class PageController {
                     $this->model->session_manager->addToCart($product_id);
                 }
                 break;
+            case "shopping_cart":
+                $this->model = new ShopModel($this->model);
+                $this->model->cart = $this->model->session_manager->getShoppingCart();
+                $this->model->products = getProductsByIds(array_keys($this->model->cart));
+                if (Util::isPost()) {
+                    $product_id = Util::getPostValue("product_id");
+                    $quantity = Util::getPostValue("quantity");
+                    $this->model->session_manager->addToCart($product_id,$quantity);
+                }
+                break;
+            case "checkout":
+                $this->model = new ShopModel($this->model);
+                $this->model->cart = $this->model->session_manager->getShoppingCart();
+                $this->model->validateCheckout();
+                if ($this->model->valid) {
+                    $this->model->session_manager->emptyCart();
+                    $this->model->setPage("checkout_thanks");
+                }
+                break;
+            case "top5":
+                $this->model->top_5_products = getTop5Products();
+                break;
         }
     }
     // to client: presentation tier

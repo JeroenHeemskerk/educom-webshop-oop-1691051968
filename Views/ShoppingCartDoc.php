@@ -3,13 +3,8 @@
 require_once "ProductsDoc.php";
 
 class ShoppingCartDoc extends ProductsDoc {
-
-    public function __construct($data) {
-        $this->data = $data;
-        $this->cart = $data["cart"];
-        $this->products = $data["products"];
-        $this->total = 0;
-    }
+    
+    private $total = 0;
 
     private function showEmptyShoppingCart() {
         $this->showDivStart();
@@ -58,8 +53,8 @@ class ShoppingCartDoc extends ProductsDoc {
         $this->showDivStart("row");
         $this->showDivStart("column items");
         echo '<h3>Items</h3>';
-        foreach ($this->cart as $product_id => $quantity) {
-            $product = $this->products[$product_id];
+        foreach ($this->model->cart as $product_id => $quantity) {
+            $product = $this->model->products[$product_id];
             $subtotal = number_format(((float)$product["price"] * (int)$quantity), 2, ".", "");
             $this->total += $subtotal;
             $this->showShoppingCartLine($product_id,$product,$quantity,$subtotal);
@@ -88,7 +83,7 @@ class ShoppingCartDoc extends ProductsDoc {
         $this->showShoppingCartSummary();
     }
     protected function showContent() {
-        if (empty($this->cart)) {
+        if (empty($this->model->cart)) {
             $this->showEmptyShoppingCart();
         }
         else {

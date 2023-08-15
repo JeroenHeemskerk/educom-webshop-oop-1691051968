@@ -6,6 +6,10 @@ require_once "db_repository.php";
 
 class UserModel extends PageModel {
 
+    public $values = array();
+    public $user = array();
+    public $errors = array();
+
     public function __construct($model) {
         PARENT::__construct($model);
     }
@@ -55,7 +59,7 @@ class UserModel extends PageModel {
             $this->validateField($key, $value);
         }
     }
-    private function checkForError() {
+    protected function checkForError() {
         if (empty($this->errors)) {
             $this->valid = true;
         }
@@ -74,9 +78,6 @@ class UserModel extends PageModel {
     public function doesEmailExist($email) {
         return (!is_null(findUserByEmail($email)));
     }
-    private function recordGenericError() {
-        $this->errors["genericErr"] = 'Due to technical error, we cannot proceed with this process';
-    }
     public function validateRegisterForm() {
         $this->setFormValues();
         if (Util::isPost()) {
@@ -90,7 +91,7 @@ class UserModel extends PageModel {
                 }
             }
             catch (Exception $e) {
-                $this->recordGenericError();
+                $this->model->recordGenericError();
                 Util::showLog($e->getMessage());
             }
             $this->checkForError();
@@ -119,7 +120,7 @@ class UserModel extends PageModel {
                 }   
             }
             catch (Exception $e) {
-                $this->recordGenericError();
+                $this->model->recordGenericError();
                 Util::showLog($e->getMessage());
             }
             $this->checkForError();
@@ -146,7 +147,7 @@ class UserModel extends PageModel {
                     }
                 }
                 catch (Exception $e) {
-                    $this->recordGenericError();
+                    $this->model->recordGenericError();
                     Util::showLog($e->getMessage());
                 }
                 $this->checkForError();
