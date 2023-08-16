@@ -42,7 +42,7 @@ class PageController {
                 $this->model->setPage("home");
                 break;
             case "webshop":
-                $this->model = new ShopModel($this->model);
+                $this->model = $this->factory->createModel("shop",$this->model);
                 $this->model->products = getAllProducts();
                 if (Util::isPost()) {
                     $this->model->session_manager->addToCart(Util::getPostValue("product_id"));

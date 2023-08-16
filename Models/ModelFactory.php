@@ -6,7 +6,7 @@ require_once "Models/ShopModel.php";
 require_once "Cruds/UserCrud.php";
 require_once "Cruds/ShopCrud.php";
 
-class FactoryModel {
+class ModelFactory {
 
     public function __construct($crud) {
         $this->crud = $crud;
