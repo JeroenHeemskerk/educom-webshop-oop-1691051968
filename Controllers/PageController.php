@@ -1,15 +1,13 @@
 <?php
 
-require_once "Models/PageModel.php";
-require_once "Models/UserModel.php";
-require_once "Models/ShopModel.php";
-
 class PageController {
 
+    private $factory;
     private $model;
 
-    public function __construct() {
-        $this->model = new PageModel(NULL);
+    public function __construct($factory) {
+        $this->factory = $factory;
+        $this->model = $this->factory->createModel("page");
     }
     public function handleRequest() {
         $this->getRequest();
@@ -24,35 +22,20 @@ class PageController {
     private function processRequest() {
         switch ($this->model->page) {
             case "contact":
-                $this->model = new UserModel($this->model);
+                $this->model = $this->factory->createModel("user",$this->model);
                 $this->model->validateContactForm();
-                if ($this->model->valid) {
-                    $this->model->setPage("contact_thanks");
-                }
                 break;
             case "register":
-                $this->model = new UserModel($this->model);
+                $this->model = $this->factory->createModel("user",$this->model);
                 $this->model->validateRegisterForm();
-                if ($this->model->valid) {
-                    storeUser($this->model->values["email"],$this->model->values["name"],$this->model->values["password"]);
-                    $this->model->setPage("login");
-                }
                 break;
             case "login":
-                $this->model = new UserModel($this->model);
+                $this->model = $this->factory->createModel("user",$this->model);
                 $this->model->validateLoginForm();
-                if ($this->model->valid) {
-                    $this->model->session_manager->LoginUser($this->model->user);
-                    $this->model->setPage("home");
-                }
                 break;
             case "change_password":
-                $this->model = new UserModel($this->model);
+                $this->model = $this->factory->createModel("user",$this->model);
                 $this->model->validateChangePasswordForm();
-                if ($this->model->valid) {
-                    updatePassword($this->model->user["user_id"],$this->model->values["new_password"]);
-                    $this->model->setPage("home");
-                }
                 break;
             case "logout":
                 $this->model->session_manager->logoutUser();

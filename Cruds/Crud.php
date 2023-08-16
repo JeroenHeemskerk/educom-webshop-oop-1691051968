@@ -5,7 +5,7 @@ class Crud {
     private $servername = "localhost";
     private $username = "webshop_user";
     private $password = "AXN4OSdTm@ua]r4M";
-    private $dbname = "test";
+    private $dbname = "my_webshop";
 
     private function connect_to_db() {
         try {
@@ -71,6 +71,18 @@ class Crud {
             $rows = $stmt->fetchAll();
             $rows = $this->sort_rows($rows, $key_column);
             return $rows;
+        }
+        catch (PDOException $e) {
+            echo "Error: ".$e->getMessage();
+        }
+        finally {
+            $conn = NULL;
+        }
+    }
+    public function updateOneRow($sql, $params=NULL) {
+        try {
+            $conn = $this->connect_to_db();
+            $stmt = $this->prepare_sql($conn, $sql, $params);
         }
         catch (PDOException $e) {
             echo "Error: ".$e->getMessage();

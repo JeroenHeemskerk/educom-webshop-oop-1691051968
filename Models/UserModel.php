@@ -9,9 +9,11 @@ class UserModel extends PageModel {
     public $values = array();
     public $user = array();
     public $errors = array();
+    private $crud;
 
-    public function __construct($model) {
+    public function __construct($model,$crud) {
         PARENT::__construct($model);
+        $this->crud = $crud;
     }
     private function getFormFields() {
         $form_fields = array("contact"=>array("gender"=>"","name"=>"","email"=>"","phone"=>"","subject"=>"","commpref"=>"","message"=>""),
@@ -20,7 +22,7 @@ class UserModel extends PageModel {
                         "change_password"=>array("current_password"=>"","new_password"=>"","confirm_new_password"=>""));
         return $form_fields[$this->page];
     }
-    private function setFormValues() {
+    private function setEmptyFields() {
         $this->values = $this->getFormFields();
     }
     private function validateField($key, $value) {
@@ -65,27 +67,30 @@ class UserModel extends PageModel {
         }
     }
     public function validateContactForm() {
-        $this->setFormValues();
+        $this->setEmptyFields();
         if (Util::isPost()) {
             $this->setPage(Util::getPostValue("page"));
             $this->ValidateForm();
             $this->checkForError();
+        }
+        if ($this->valid) {
+            $this->setPage("contact_thanks");
         }
     }
     private function isEmailNotEmpty() {
         return (!empty($this->values["email"]));
     }
     public function doesEmailExist($email) {
-        return (!is_null(findUserByEmail($email)));
+        return (!is_null($this->crud->readUserByEmail($email)));
     }
     public function validateRegisterForm() {
-        $this->setFormValues();
+        $this->setEmptyFields();
         if (Util::isPost()) {
             $this->setPage(Util::getPostValue("page"));
             $this->ValidateForm();
             try {
                 if ($this->isEmailNotEmpty()) {
-                    if ($this->doesEmailExist($this->values->email)) {
+                    if ($this->doesEmailExist($this->values["email"])) {
                         $this->errors["user_already_exists"] = "Email already exists";
                     }
                 }
@@ -96,9 +101,13 @@ class UserModel extends PageModel {
             }
             $this->checkForError();
         }
+        if ($this->valid) {
+            $this->crud->createUser($this->values["email"],$this->values["name"],$this->values["password"]);
+            $this->setPage("login");
+        }
     }
     public function validateLoginForm() {
-        $this->setFormValues();
+        $this->setEmptyFields();
         if (Util::isPost()) {
             $this->setPage(Util::getPostValue("page"));
             $this->ValidateForm();
@@ -125,25 +134,29 @@ class UserModel extends PageModel {
             }
             $this->checkForError();
         }
+        if ($this->valid) {
+            $this->session_manager->LoginUser($this->user);
+            $this->setPage("home");
+        }
     }
     public function validateChangePasswordForm() {
-        $this->setFormValues();
+        $this->setEmptyFields();
         if (Util::isPost()) {
             if ($this->session_manager->isUserLoggedIn()) {
                 $this->setPage(Util::getPostValue("page"));
                 $this->ValidateForm();
 
                 try {
-                    $user = findUserById($this->session_manager->getLoggedInUserId());
-                    if ($this->values["current_password"] != $user["password"]) { 
+                    $user = $this->crud->readUserById($this->session_manager->getLoggedInUserId());
+                    if ($this->values["current_password"] != $user->password) { 
                         $this->errors["current_password"] = "Your password is incorrect";
                     }
                     elseif ($this->values["new_password"] != $this->values["confirm_new_password"]) {
                             $this->errors["confirm_new_password"] = "Passwords do not match. Try again";
                     }
                     else {
-                        $this->user["user_id"] = $user["user_id"];
-                        $this->user["name"] = $user["name"];
+                        $this->user["user_id"] = $user->user_id;
+                        $this->user["name"] = $user->name;
                     }
                 }
                 catch (Exception $e) {
@@ -151,6 +164,10 @@ class UserModel extends PageModel {
                     Util::showLog($e->getMessage());
                 }
                 $this->checkForError();
+            }
+            if ($this->valid) {
+                $this->crud->updateUserPassword($this->user["user_id"],$this->values["new_password"]);
+                $this->setPage("home");
             }
         }
     }
