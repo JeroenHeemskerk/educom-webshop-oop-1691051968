@@ -2,7 +2,6 @@
 
 require_once "PageModel.php";
 require_once "Util.php";
-require_once "db_repository.php";
 
 class UserModel extends PageModel {
 
@@ -61,11 +60,6 @@ class UserModel extends PageModel {
             $this->validateField($key, $value);
         }
     }
-    protected function checkForError() {
-        if (empty($this->errors)) {
-            $this->valid = true;
-        }
-    }
     public function validateContactForm() {
         $this->setEmptyFields();
         if (Util::isPost()) {
@@ -81,7 +75,7 @@ class UserModel extends PageModel {
         return (!empty($this->values["email"]));
     }
     public function doesEmailExist($email) {
-        return (!is_null($this->crud->readUserByEmail($email)));
+        return (!$this->crud->readUserByEmail($email));
     }
     public function validateRegisterForm() {
         $this->setEmptyFields();
@@ -90,7 +84,7 @@ class UserModel extends PageModel {
             $this->ValidateForm();
             try {
                 if ($this->isEmailNotEmpty()) {
-                    if ($this->doesEmailExist($this->values["email"])) {
+                    if (!$this->doesEmailExist($this->values["email"])) {
                         $this->errors["user_already_exists"] = "Email already exists";
                     }
                 }
@@ -113,17 +107,17 @@ class UserModel extends PageModel {
             $this->ValidateForm();
             try {
                 if ($this->isEmailNotEmpty()) {
-                    if (!$this->doesEmailExist($this->values["email"])) {
+                    if ($this->doesEmailExist($this->values["email"])) {
                         $this->errors["no_existing_user"] = "This user doesn't seem to exist";
                     }
                     else {
-                        $user = findUserByEmail($this->values["email"]);
-                        if (!$this->values["password"] == $user["password"]) {
+                        $user = $this->crud->readUserByEmail($this->values["email"]);
+                        if (!$this->values["password"] == $user->password) {
                             $this->errors["authentication"] = "Your password is incorrect";
                         }
                         else {
-                            $this->user["user_id"] = $user["user_id"];
-                            $this->user["name"] = $user["name"];
+                            $this->user["user_id"] = $user->user_id;
+                            $this->user["name"] = $user->name;
                         }
                     }
                 }   

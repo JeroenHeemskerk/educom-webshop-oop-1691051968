@@ -38,48 +38,31 @@ class PageController {
                 $this->model->validateChangePasswordForm();
                 break;
             case "logout":
-                $this->model->session_manager->logoutUser();
-                $this->model->setPage("home");
+                $this->model = $this->factory->createModel("page",$this->model);
+                $this->model->doLogoutUser();
                 break;
             case "webshop":
                 $this->model = $this->factory->createModel("shop",$this->model);
-                $this->model->products = getAllProducts();
-                if (Util::isPost()) {
-                    $this->model->session_manager->addToCart(Util::getPostValue("product_id"));
-                }
+                $this->model->setProducts();
+                $this->model->validateProductAddToCart();
                 break;
             case "detail":
-                $this->model = new ShopModel($this->model);
-                $product_id = Util::getUrlValue("product_id");
-                if ($this->model->doesProductExist($product_id)) {
-                    $this->model->product = getProductById($product_id);
-                }
-                if (Util::isPost()) {
-                    $product_id = Util::getPostValue("product_id");
-                    $this->model->session_manager->addToCart($product_id);
-                }
+                $this->model = $this->factory->createModel("shop",$this->model);
+                $this->model->validateDetailProduct();
+                $this->model->validateProductAddToCart();
                 break;
             case "shopping_cart":
-                $this->model = new ShopModel($this->model);
-                $this->model->cart = $this->model->session_manager->getShoppingCart();
-                $this->model->products = getProductsByIds(array_keys($this->model->cart));
-                if (Util::isPost()) {
-                    $product_id = Util::getPostValue("product_id");
-                    $quantity = Util::getPostValue("quantity");
-                    $this->model->session_manager->addToCart($product_id,$quantity);
-                }
+                $this->model = $this->factory->createModel("shop",$this->model);
+                $this->model->validateShoppingCart();
                 break;
             case "checkout":
-                $this->model = new ShopModel($this->model);
-                $this->model->cart = $this->model->session_manager->getShoppingCart();
+                $this->model = $this->factory->createModel("shop",$this->model);
+                $this->model->setShoppingCart();
                 $this->model->validateCheckout();
-                if ($this->model->valid) {
-                    $this->model->session_manager->emptyCart();
-                    $this->model->setPage("checkout_thanks");
-                }
                 break;
             case "top5":
-                $this->model->top_5_products = getTop5Products();
+                $this->model = $this->factory->createModel("shop",$this->model);
+                $this->model->setTop5Products();
                 break;
         }
     }

@@ -7,7 +7,7 @@ class Crud {
     private $password = "AXN4OSdTm@ua]r4M";
     private $dbname = "my_webshop";
 
-    private function connect_to_db() {
+    private function connectToDb() {
         try {
             $conn = new PDO("mysql:host=$this->servername;dbname=$this->dbname", $this->username, $this->password);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -18,7 +18,7 @@ class Crud {
             echo "Error: ".$e->getMessage(); 
         }
     }
-    private function prepare_sql($conn, $sql, $params) {
+    private function prepareSql($conn, $sql, $params) {
         $stmt = $conn->prepare($sql);
         if (!is_null($params)) {
             foreach ($params as $key => $value) {
@@ -29,34 +29,20 @@ class Crud {
         return $stmt;
     }
     public function createRow($sql,$params) {
-        try {
-            $conn = $this->connect_to_db();
-            $stmt = $this->prepare_sql($conn, $sql, $params);
-            $last_id = $conn->lastInsertId();
-            return $last_id;
-        }
-        catch (PDOException $e) {
-            echo $sql."<br>".$e->getMessage();
-        }
-        finally {
-            $conn = NULL;
-        }
-    }
+        $conn = $this->connectToDb();
+        $stmt = $this->prepareSql($conn, $sql, $params);
+        $last_id = $conn->lastInsertId();
+        $conn = NULL;
+        return $last_id;
+}
     public function readOneRow($sql, $params=NULL) {
-        try {
-            $conn = $this->connect_to_db();
-            $stmt = $this->prepare_sql($conn, $sql, $params);
-            $row = $stmt->fetch();
-            return $row;
-        }
-        catch (PDOException $e) {
-            echo "Error: ".$e->getMessage();
-        }
-        finally {
-            $conn = NULL;
-        }
+        $conn = $this->connectToDb();
+        $stmt = $this->prepareSql($conn, $sql, $params);
+        $row = $stmt->fetch();
+        $conn = NULL;
+        return $row;
     }
-    private function sort_rows($rows, $key_column) {
+    private function sortRows($rows, $key_column) {
         $sorted_rows = array();
         foreach ($rows as $key => $value) {
             $key = $value->$key_column;
@@ -65,30 +51,16 @@ class Crud {
         return $sorted_rows;
     }
     public function readMultipleRow($sql, $params=NULL, $key_column) {
-        try {
-            $conn = $this->connect_to_db();
-            $stmt = $this->prepare_sql($conn, $sql, $params);
-            $rows = $stmt->fetchAll();
-            $rows = $this->sort_rows($rows, $key_column);
-            return $rows;
-        }
-        catch (PDOException $e) {
-            echo "Error: ".$e->getMessage();
-        }
-        finally {
-            $conn = NULL;
-        }
+        $conn = $this->connectToDb();
+        $stmt = $this->prepareSql($conn, $sql, $params);
+        $rows = $stmt->fetchAll();
+        $rows = $this->sortRows($rows, $key_column);
+        $conn = NULL;
+        return $rows;
     }
     public function updateOneRow($sql, $params=NULL) {
-        try {
-            $conn = $this->connect_to_db();
-            $stmt = $this->prepare_sql($conn, $sql, $params);
-        }
-        catch (PDOException $e) {
-            echo "Error: ".$e->getMessage();
-        }
-        finally {
-            $conn = NULL;
-        }
+        $conn = $this->connectToDb();
+        $stmt = $this->prepareSql($conn, $sql, $params);
+        $conn = NULL;
     }
 }

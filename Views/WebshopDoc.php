@@ -6,14 +6,14 @@ class WebshopDoc extends ProductsDoc {
 
     protected function showProductCard($product) {
         $this->showDivStart("column");
-        $this->showProductDetailLinkStart($product["product_id"]);
-        $this->showProductImage($product["filename"]);
-        $this->showProductBrand($product["brand"]);
-        $this->showProductName($product["name"]);
-        $this->showProductPrice($product["price"]);
+        $this->showProductDetailLinkStart($product->product_id);
+        $this->showProductImage($product->filename);
+        $this->showProductBrand($product->brand);
+        $this->showProductName($product->name);
+        $this->showProductPrice($product->price);
         $this->showProductDetailLinkEnd();
         if ($this->model->session_manager->isUserLoggedIn()) {
-            $this->showAddToCart($product["product_id"]);
+            $this->showAddToCart($product->product_id);
         }
         $this->showDivEnd();
     }

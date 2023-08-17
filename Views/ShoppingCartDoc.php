@@ -25,13 +25,13 @@ class ShoppingCartDoc extends ProductsDoc {
         $this->showDivStart("cart_product");
         $this->showDivStart("c1");
         $this->showProductDetailLinkStart($product_id);
-        $this->showProductImage($product["filename"]);
+        $this->showProductImage($product->filename);
         $this->showProductDetailLinkEnd();
         $this->showDivEnd();
         $this->showDivStart("c2");
         $this->showDivStart();
         $this->showProductDetailLinkStart($product_id);
-        $this->showProductName($product["brand"]." ".$product["name"]);
+        $this->showProductName($product->brand." ".$product->name);
         $this->showProductDetailLinkEnd();
         $this->showDivEnd();
         $this->showDivStart("grid-2");
@@ -39,7 +39,7 @@ class ShoppingCartDoc extends ProductsDoc {
         echo '<hr>';
         $this->showDivStart();
         echo '<label>Each</label>';
-        echo '<p class="price_each">&euro;'.$product["price"].'</p>';
+        echo '<p class="price_each">&euro;'.$product->price.'</p>';
         $this->showDivEnd();
         $this->showDivEnd();
         $this->showDivEnd();
@@ -54,8 +54,8 @@ class ShoppingCartDoc extends ProductsDoc {
         $this->showDivStart("column items");
         echo '<h3>Items</h3>';
         foreach ($this->model->cart as $product_id => $quantity) {
-            $product = $this->model->products[$product_id];
-            $subtotal = number_format(((float)$product["price"] * (int)$quantity), 2, ".", "");
+            $product = $this->model->cart_products[$product_id];
+            $subtotal = number_format(((float)$product->price * (int)$quantity), 2, ".", "");
             $this->total += $subtotal;
             $this->showShoppingCartLine($product_id,$product,$quantity,$subtotal);
         }

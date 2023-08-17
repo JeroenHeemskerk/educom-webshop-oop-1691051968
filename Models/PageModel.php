@@ -58,4 +58,13 @@ class PageModel {
     protected function recordGenericError() {
         $this->errors["genericErr"] = 'Due to technical error, we cannot proceed with this process';
     }
+    protected function checkForError() {
+        if (empty($this->errors)) {
+            $this->valid = true;
+        }
+    }
+    public function doLogoutUser() {
+        $this->session_manager->logoutUser();
+        $this->setPage("home");
+    }
 }
