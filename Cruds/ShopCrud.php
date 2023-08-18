@@ -1,6 +1,8 @@
 <?php 
 
-class ShopCrud {
+require_once "IShopCrud.php";
+
+class ShopCrud implements IShopCrud {
     
     private $crud;
 

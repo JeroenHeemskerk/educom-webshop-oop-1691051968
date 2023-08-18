@@ -9,9 +9,9 @@ class PageModel {
     public $page;
     protected $isPost = false;
     public $menu;
-    public $genericErr = "";
     public $valid = false;
     public $session_manager;
+    public $errors = array();
 
     public function __construct($copy) {
         if (empty($copy)) {
