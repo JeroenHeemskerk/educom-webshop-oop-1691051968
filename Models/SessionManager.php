@@ -3,7 +3,7 @@
 class SessionManager {
 
     public function isUserLoggedIn() {
-        return isset($_SESSION["user_name"]);
+        return isset($_SESSION["user_id"]);
     }
     public function getLoggedInUserId() {
         return $_SESSION["user_id"];

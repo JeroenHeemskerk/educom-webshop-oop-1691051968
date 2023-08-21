@@ -14,17 +14,17 @@ class UserModel extends PageModel {
         PARENT::__construct($model);
         $this->crud = $crud;
     }
-    private function getFormFields() {
+    public function getFormFields() {
         $form_fields = array("contact"=>array("gender"=>"","name"=>"","email"=>"","phone"=>"","subject"=>"","commpref"=>"","message"=>""),
                         "register"=>array("email"=>"","name"=>"","password"=>"","confirm_password"=>""),
                         "login"=>array("email"=>"","password"=>""),
                         "change_password"=>array("current_password"=>"","new_password"=>"","confirm_new_password"=>""));
         return $form_fields[$this->page];
     }
-    private function setEmptyFields() {
+    public function setEmptyFields() {
         $this->values = $this->getFormFields();
     }
-    private function validateField($key, $value) {
+    public function validateField($key, $value) {
         if (empty($value)) { 
             $this->errors[$key] = ucfirst(str_replace("_", " ", $key)) .  " is required";
         }
@@ -46,14 +46,14 @@ class UserModel extends PageModel {
                     }
                     break;
                 case "confirm_password":
-                    if (!$this->values["password"] == $this->values["confirm_password"]) {
-                        $this->errors["confirm_password"] = "Passwords do not match. Try again";
+                    if ($this->values["password"] != $value) {
+                        $this->errors[$key] = "Passwords do not match. Try again";
                     }
                     break;
             }   
         } 
     }
-    private function ValidateForm() {
+    public function ValidateForm() {
         foreach ($this->values as $key => $value) {
             $value = Util::getPostValue($key);
             $this->values[$key] = $value;
@@ -71,11 +71,11 @@ class UserModel extends PageModel {
             $this->setPage("contact_thanks");
         }
     }
-    private function isEmailNotEmpty() {
+    public function isEmailNotEmpty() {
         return (!empty($this->values["email"]));
     }
     public function doesEmailExist($email) {
-        return (!$this->crud->readUserByEmail($email));
+        return !is_null($this->crud->readUserByEmail($email));
     }
     public function validateRegisterForm() {
         $this->setEmptyFields();
@@ -84,13 +84,13 @@ class UserModel extends PageModel {
             $this->ValidateForm();
             try {
                 if ($this->isEmailNotEmpty()) {
-                    if (!$this->doesEmailExist($this->values["email"])) {
+                    if ($this->doesEmailExist($this->values["email"])) {
                         $this->errors["user_already_exists"] = "Email already exists";
                     }
                 }
             }
             catch (Exception $e) {
-                $this->model->recordGenericError();
+                $this->recordGenericError();
                 Util::showLog($e->getMessage());
             }
             $this->checkForError();
@@ -107,12 +107,12 @@ class UserModel extends PageModel {
             $this->ValidateForm();
             try {
                 if ($this->isEmailNotEmpty()) {
-                    if ($this->doesEmailExist($this->values["email"])) {
+                    if (!$this->doesEmailExist($this->values["email"])) {
                         $this->errors["no_existing_user"] = "This user doesn't seem to exist";
                     }
                     else {
                         $user = $this->crud->readUserByEmail($this->values["email"]);
-                        if (!$this->values["password"] == $user->password) {
+                        if ($this->values["password"] != $user->password) {
                             $this->errors["authentication"] = "Your password is incorrect";
                         }
                         else {
@@ -146,7 +146,7 @@ class UserModel extends PageModel {
                         $this->errors["current_password"] = "Your password is incorrect";
                     }
                     elseif ($this->values["new_password"] != $this->values["confirm_new_password"]) {
-                            $this->errors["confirm_new_password"] = "Passwords do not match. Try again";
+                        $this->errors["confirm_new_password"] = "Passwords do not match. Try again";
                     }
                     else {
                         $this->user["user_id"] = $user->user_id;

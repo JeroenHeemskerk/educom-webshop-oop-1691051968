@@ -21,6 +21,9 @@ class TestShopCrud implements IShopCrud {
     }
     public function createOrder($user_id) {
         array_push($this->sqlQueries, "createOrder");
+        if ($user_id == 1) {
+            throw new Exception("This a test exception");
+        }
         return $user_id;
     }
     public function createProductOrder($order_id,$product_id,$quantity) {

@@ -12,6 +12,7 @@ class PageModel {
     public $valid = false;
     public $session_manager;
     public $errors = array();
+    public $genericErr = '';
 
     public function __construct($copy) {
         if (empty($copy)) {

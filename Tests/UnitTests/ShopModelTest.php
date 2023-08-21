@@ -219,7 +219,6 @@ class ShopModelTest extends TestCase {
         $shop_model = new ShopModel(NULL,$crud);
         $shop_model->cart = array(9=>7);
         $shop_model->page = "Test";
-        $shop_model->errors["myerror"] = "MyError";
         // run
         $shop_model->validateCheckout();
         $result = $shop_model->page;

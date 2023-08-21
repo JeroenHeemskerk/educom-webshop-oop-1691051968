@@ -1,8 +1,8 @@
 <?php
 
-require_once "Crud.php";
+require_once "IUserCrud.php";
 
-class UserCrud {
+class UserCrud implements IUserCrud {
 
     private $crud;
 
